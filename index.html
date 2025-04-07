@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BMI Tracker</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #1e1e2f;
+      color: #f8f9fa;
+      font-family: 'Courier New', Courier, monospace;
+    }
+    .bmi-box {
+      max-width: 600px;
+      margin: 60px auto;
+      background: #2d2d44;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
+    }
+    .bmi-box h2 {
+      font-weight: bold;
+      color: #0dcaf0;
+    }
+    .bmi-box input {
+      background-color: #444;
+      border: none;
+      color: #fff;
+    }
+    .bmi-box input::placeholder {
+      color: #aaa;
+    }
+    .bmi-box .btn-custom {
+      background-color: #0dcaf0;
+      border: none;
+      padding: 10px 25px;
+      font-weight: bold;
+      color: #000;
+      margin-top: 15px;
+      transition: background-color 0.3s;
+    }
+    .bmi-box .btn-custom:hover {
+      background-color: #0bbcd3;
+    }
+    .toggle-info {
+      background: none;
+      border: 1px solid #0dcaf0;
+      color: #0dcaf0;
+      padding: 8px 20px;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+    .info-box {
+      margin-top: 20px;
+      display: none;
+    }
+    .info-box p {
+      background-color: #343a40;
+      padding: 15px;
+      border-radius: 10px;
+    }
+    footer {
+      text-align: center;
+      margin-top: 50px;
+      padding: 20px;
+      color: #aaa;
+    }
+    a {
+      color: #0dcaf0;
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bmi-box">
+    <h2 class="text-center mb-4">BMI Tracker</h2>
+    <div class="mb-3">
+      <label for="weight" class="form-label">Weight (kg):</label>
+      <input type="number" id="weight" class="form-control" placeholder="Enter weight in kilograms">
+    </div>
+    <div class="mb-3">
+      <label for="height" class="form-label">Height (m):</label>
+      <input type="number" id="height" class="form-control" placeholder="Enter height in meters">
+    </div>
+    <button class="btn btn-custom w-100" onclick="computeBMI()">Check My BMI</button>
+    <button class="toggle-info w-100 mt-2" onclick="showInstructions()">Open Instructions</button>
+    <div class="info-box" id="info">
+      <p>Put your weight in kilograms and height in meters to be able to calculate your bmi :).</p>
+    </div>
+    <div id="output" class="mt-4"></div>
+  </div>
+
+  <footer>
+    Source: <a href="https://www.nhlbi.nih.gov/health/educational/lose_wt/BMI/bmi-m.htm" target="_blank">bmi calculator</a>
+  </footer>
+
+  <script>
+    function showInstructions() {
+      const box = document.getElementById('info');
+      box.style.display = box.style.display === 'none' || box.style.display === '' ? 'block' : 'none';
+    }
+
+    function computeBMI() {
+      const weight = parseFloat(document.getElementById('weight').value);
+      const height = parseFloat(document.getElementById('height').value);
+      const output = document.getElementById('output');
+
+      if (!weight || !height || weight <= 0 || height <= 0) {
+        output.innerHTML = '<p class="text-danger">Please enter valid weight and height values.</p>';
+        return;
+      }
+
+      const bmi = Math.round((weight / Math.pow(height, 2)) * 100) / 100;
+      let status = '';
+
+      if (bmi < 18.5) {
+        status = 'Underweight';
+      } else if (bmi >= 18.5 && bmi <= 24.9) {
+        status = 'Normal weight';
+      } else if (bmi >= 25 && bmi <= 29.9) {
+        status = 'Overweight';
+      } else {
+        status = 'Obese';
+      }
+
+      output.innerHTML = `<p class="alert alert-info">Your BMI is <strong>${bmi}</strong> and you are categorized as <strong>${status}</strong>.</p>`;
+    }
+  </script>
+</body>
+
+</html>
